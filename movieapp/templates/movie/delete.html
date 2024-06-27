@@ -1,0 +1,12 @@
+{% extends 'movie/base.html' %}
+{%load static %}
+
+{% block content %}
+<div class="content">
+<form method="POST">
+    {% csrf_token %}
+    <p>are you sure you want to delete this movie</p>
+    <input type="submit" class="acount-btn" value="ok">
+</form>
+</div>
+{% endblock %}

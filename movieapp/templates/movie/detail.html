@@ -1,0 +1,75 @@
+{% extends 'movie/base.html' %}
+{%load static %}
+{% block content %}
+<div class="content">
+    <div class="movie_top">
+        <div class="col-md-12 movie_box">
+            <div class="grid images_3_of_2">
+                <div class="movie_image">
+                    <img src="{{movie.img.url}}" class="img-responsive" alt=""/>
+                </div>
+            </div>
+            <div class="desc1 span_3_of_2">
+
+                <p class="movie_option"><strong>Title: </strong>{{movie.name}}</p>
+                <p class="movie_option"><strong>Category: </strong>{{movie.cat}}</p>
+                <p class="movie_option"><strong>Release date: </strong>December 12, 2014</p>
+                <p class="movie_option"><strong>Actors: </strong>{{movie.actors}}</p>
+                <p class="movie_option"><strong>Description: </strong>{{movie.desc}}</p>
+                <p class="movie_option"><strong>Movie rating:{{ average }}/10</strong></p>
+                {% if user.id == movie.user.id %}
+                <a class="btn btn-warning" href="{% url 'movieapp:update' movie.id %}">update</a>
+                <a class="btn btn-danger" href="{% url 'movieapp:delete' movie.id %}">delete</a>
+                {% endif %}
+
+            </div>
+            <div class="clearfix"></div>
+            <p class="m_4">There are many variations of passages of Lorem Ipsum available, but the majority have
+                suffered alteration in some form, by injected humour, or randomised words which don't look even slightly
+                believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything
+                embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat
+                predefined chunks as necessary, making this the first true generator on the Internet.</p>
+            <form action="{% url 'movieapp:add_review' movie.id %}" method="POST">
+                        {% csrf_token %}
+                <label for="comment">Review</label>
+                <div class="text">
+                    <textarea value="Message:" onfocus="this.value = '';"
+                              onblur="if (this.value == '') {this.value = 'Message';}"name="comment" id="comment" >Message:</textarea>
+                </div>
+                <label for="rating">Rating</label>
+                        <input type="range" id="rangeInput" name="rating" min="0" max="10" value="0" step="0.5"
+                               oninput="amount.value=rangeInput.value">
+                        <output name="amount" id="amount" for="rangeInput">0</output>
+                        <br>
+                <div class="form-submit1">
+                    <input type="submit"  value="Submit Your Review">
+                </div>
+                <div class="clearfix"></div>
+            </form>
+            <div class="single">
+                <h1>Reviews</h1>
+                <ul class="single_list">
+                  {% for review in reviews %}
+                    <li>
+                        <div class="preview"><a href="#"><img src="images/2.jpg" class="img-responsive" alt="">{{ review.user.username }}</a>
+                        </div>
+                        <div class="data">
+                            <div class="title">Movie / 2 hours ago / <a href="#">reply</a></div>
+                            <p>{{ review.comment }}.</p>
+                        </div>
+                         <h5>{{ review.rating }}</h5>
+                            {% if request.user == review.user %}
+                            <a href="{% url 'movieapp:edit_review' movie.id review.id %}"class="btn btn-warning">Edit</a>
+                            <a href="{% url 'movieapp:delete_review' movie.id review.id %}"
+                               onclick="return confirm('Are you sure want to delete this?');" class="btn btn-danger">Delete</a>
+                            {% endif %}
+                        <div class="clearfix"></div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+{% endblock %}

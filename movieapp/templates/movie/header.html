@@ -1,0 +1,43 @@
+{% load static %}
+<header>
+    <div class="header_top">
+        <div class="col-sm-3"><a href="{% url 'movieapp:home' %}"><img src="{% static 'images/logo.png' %}" alt=""/></a>
+        </div>
+        {% if user.is_authenticated %}
+        <div class="col-sm-6 nav">
+            <a class="acount-btn" href="{% url 'movieapp:home' %}" aria-haspopup="true" aria-expanded="false">
+                Home
+            </a>
+            <div class="dropdown show">
+                <a class="acount-btn" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Categories
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {% for genre in genres %}
+                    <a class="dropdown-item" href="{% url 'movieapp:genre_detail' genre.id %}">{{ genre.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-sm-6 nav">
+        </div>
+        {% endif %}
+        <div class="col-sm-3 header_right">
+            <ul class="header_right_box">
+                {% if user.is_authenticated %}
+                <li><p><a href="{% url 'profile' %}">{{user.username}}</a></p></li>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button class="acount-btn" type="submit">Logout</button>
+                </form>
+                {% else %}
+                <li><p><a href="{% url 'login' %}">Sign in</a></p></li>
+                {% endif %}
+                <div class="clearfix"></div>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</header>

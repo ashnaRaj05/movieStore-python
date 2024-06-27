@@ -1,0 +1,20 @@
+{% extends 'movie/base.html' %}
+{% load static %}
+{% block content %}
+<div class="content">
+<h1>{{ cat.name }}</h1>
+    <div class="row mx_auto">
+    {% for item in items %}
+    <div class="my_bottom_margin col-9 col-sm-12 col-md-4  col-lg-4 ">
+            <div class="card text-center " style="min-width:18rem;">
+                <a href="{{item.img.url}}"><img class="card-image-top my_image" src="{{item.img.url}}" alt="{{movie.name}}"></a>
+                <div class="card_body">
+                    <h4>{{ item.name }}</h4>
+                    <p>{{item.cat}}</p>
+                </div>
+            </div>
+    </div>
+{% endfor %}
+    </div>
+</div>
+{% endblock %}
